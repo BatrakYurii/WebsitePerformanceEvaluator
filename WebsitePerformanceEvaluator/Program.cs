@@ -1,9 +1,13 @@
 ﻿using System;
 
-class Program
+namespace WebsitePerformanceEvaluator
 {
-    static void Main(string[] args)
+    class Program
     {
+        static void Main(string[] args)
+        {
+            var urlsForCrawling = Console.ReadLine();
 
+        }
     }
 }
