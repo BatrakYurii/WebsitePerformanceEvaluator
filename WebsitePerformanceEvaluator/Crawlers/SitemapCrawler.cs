@@ -26,24 +26,28 @@ namespace WebsitePerformanceEvaluator.Crawlers
             {
                 websitesForSearching = websitesForSearching.Select(x => $"{x}/sitemap.xml").ToList();
 
-                using WebClient wc = new WebClient();
-                wc.Encoding = System.Text.Encoding.UTF8;
-
                 foreach (var site in websitesForSearching)
                 {
+                    //Create webclient to get data
+                    using WebClient wc = new WebClient();                    
+                    wc.Encoding = Encoding.UTF8;
+                    
+                    //Download sitemap as a string
                     string sitemapString = wc.DownloadString(site);
-                    XDocument urldoc = XDocument.Parse(sitemapString);
+
+                    //Create xml document and serialize sitemap string to xml
+                    XmlDocument urldoc = new XmlDocument();
+                    urldoc.LoadXml(sitemapString);
                     if (urldoc == null)
                         throw new Exception("One of links is invalid");
 
                     Console.WriteLine(urldoc.ToString());
 
-                    var elements = urldoc.Descendants("loc").Select(x => x.Value).ToList();
-                    
-                    //var elements = from url in urldoc.Descendants("url")
-                               //select url.Element("loc").Value.ToList();
+                    //Get all loc elements that contains all website links
+                    XmlNodeList elements = urldoc.GetElementsByTagName("loc");
 
-                    urls.AddRange(elements);
+                    foreach (XmlNode el in elements)
+                        urls.Add(el.InnerText);
                 }
                 
             }
@@ -61,8 +65,6 @@ namespace WebsitePerformanceEvaluator.Crawlers
             }
 
             return urls;
-            //urldoc.LoadXml(sitemapString);
-            //XmlNodeList xmlSitemapList = urldoc.GetElementsByTagName("");
         }
     }
 }
