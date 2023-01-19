@@ -8,6 +8,6 @@ namespace WebsitePerformanceEvaluator.Abstractions
 {
     public interface ISitemapCrawler
     {
-        public List<string> CrawlBySitemap();
+        public List<string> CrawlBySitemap(string url);
     }
 }

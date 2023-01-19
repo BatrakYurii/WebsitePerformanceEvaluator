@@ -11,15 +11,15 @@ namespace WebsitePerformanceEvaluator
         {
             Console.WriteLine("Write your website urls for crawling \n");
 
-            var urlsForCrawling = Console.ReadLine().Split(" ").ToList();
+            var urlsForCrawling = Console.ReadLine();
 
             //Create WebsiteCrawler to crawl without sitemap.xml
-            var websiteCrawler = new WebsiteCrawler(urlsForCrawling);
-            var crawled =  websiteCrawler.Crawl();
+            var websiteCrawler = new WebsiteCrawler();
+            var crawled =  websiteCrawler.Crawl(urlsForCrawling);
 
             //Create SitemapCrawler to crawl using sitmap.xml
-            var siteMapCrawle = new SitemapCrawler(urlsForCrawling);
-            var crawledBySitemap = siteMapCrawle.CrawlBySitemap();
+            var siteMapCrawle = new SitemapCrawler();
+            var crawledBySitemap = siteMapCrawle.CrawlBySitemap(urlsForCrawling);
 
             //Urls FOUNDED IN SITEMAP.XML but not founded after crawling a web site
             var foundOnlySitemap = crawledBySitemap.Where(x => !crawled.Contains(x)).ToList();
@@ -39,7 +39,7 @@ namespace WebsitePerformanceEvaluator
             //Urls FOUNDED BY CRAWLING THE WEBSITE but not in sitemap.xml
             var foundOnlyWebsiteCrawler = crawled.Where(x => !crawledBySitemap.Contains(x)).ToList();
 
-            Console.WriteLine("Urls FOUNDED BY CRAWLING THE WEBSITE but not in sitemap.xml:\r\n");
+            Console.WriteLine("\r\nUrls FOUNDED BY CRAWLING THE WEBSITE but not in sitemap.xml:\r\n");
             index = 1;
             foreach (var el in foundOnlyWebsiteCrawler)
             {
@@ -49,7 +49,7 @@ namespace WebsitePerformanceEvaluator
 
 
             //Measuring responce time for each url and output it
-            Console.WriteLine("Timig:");
+            Console.WriteLine("\r\nTimig:");
             var fullUrlList = crawled.Union(crawledBySitemap).ToList();
             var urlsWithTimings = UrlResponseCounter.GetResponceTime(fullUrlList);
 
@@ -59,7 +59,7 @@ namespace WebsitePerformanceEvaluator
                 Console.WriteLine($"{index}) {el.Url}; {el.ResponceTime}ms");
             }
 
-            Console.WriteLine($"Urls(html documents) found after crawling a website: {crawled.Count}\r\n");
+            Console.WriteLine($"\r\nUrls(html documents) found after crawling a website: {crawled.Count}\r\n");
 
             Console.WriteLine($"Urls found in sitemap: {crawledBySitemap.Count}");
 

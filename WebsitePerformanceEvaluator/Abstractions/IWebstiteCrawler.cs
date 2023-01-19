@@ -8,6 +8,6 @@ namespace WebsitePerformanceEvaluator.Abstractions
 {
     public interface IWebstiteCrawler
     {
-        public List<string> Crawl();
+        public List<string> Crawl(string url);
     }
 }
