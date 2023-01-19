@@ -9,6 +9,6 @@ namespace WebsitePerformanceEvaluator
     public class UrlModel
     {
         public string? Url { get; set; }
-        public TimeSpan ResponceTime { get; set; }
+        public long ResponceTime { get; set; }
     }
 }

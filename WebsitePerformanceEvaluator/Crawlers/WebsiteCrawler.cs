@@ -47,10 +47,12 @@ namespace WebsitePerformanceEvaluator.Crawlers
 
                         //Select all html links from document
                         var linkNodes = htmldoc.DocumentNode.SelectNodes("//a[@href]");
+                        if (linkNodes == null)
+                            continue;
                         var linksForCurrent = linkNodes.Select(x => x.Attributes["href"].Value.ToString()).ToList();
 
                         //Filter all urls to find a sutiblies
-                        var fullLinks = linksForCurrent.Where(x => linkRegex.IsMatch(x)).ToList();
+                        var fullLinks = linksForCurrent.Where(x => linkRegex.IsMatch(x) && !x.EndsWith(".jpg") && !x.EndsWith(".png")).ToList();
                         var firstUrlPart = baseUrl.Last() == '/' ? baseUrl.Substring(0, baseUrl.Length - 1) : baseUrl;
 
                         //We can have some partial links like: /souces/barbeque/. We need to concate this string with base url
