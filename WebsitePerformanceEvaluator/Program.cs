@@ -57,6 +57,7 @@ namespace WebsitePerformanceEvaluator
             foreach(var el in urlsWithTimings)
             {
                 Console.WriteLine($"{index}) {el.Url}; {el.ResponceTime}ms");
+                index++;
             }
 
             Console.WriteLine($"\r\nUrls(html documents) found after crawling a website: {crawled.Count}\r\n");

@@ -27,7 +27,8 @@ namespace WebsitePerformanceEvaluator.WorkWithNet
                 }
                 catch(WebException e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine($"{e.Message} Souce: {url}");
+                    
                 }
                 catch(Exception e)
                 {

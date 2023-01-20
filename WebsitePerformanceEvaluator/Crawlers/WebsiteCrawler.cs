@@ -25,6 +25,7 @@ namespace WebsitePerformanceEvaluator.Crawlers
 
             //Add first url to queue
             queue.Enqueue(url);
+            checkedUrl.Add(url);
 
             while (queue.Count > 0)
             {
