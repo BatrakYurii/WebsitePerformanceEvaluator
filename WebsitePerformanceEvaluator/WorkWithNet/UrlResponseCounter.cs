@@ -18,11 +18,20 @@ namespace WebsitePerformanceEvaluator.WorkWithNet
             {
                 try
                 {
+                    //Creating httpwebrequest
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                     request.Method = "HEAD";
+
+                    //Starting timer
                     Stopwatch stopwatch = Stopwatch.StartNew();
+
+                    //Sending request
                     HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                    //Stoping timer
                     stopwatch.Stop();
+
+                    //Creating urlModel
                     urlResponses.Add(new UrlModel { Url = url, ResponceTime = stopwatch.ElapsedMilliseconds });
                 }
                 catch(WebException e)
@@ -36,6 +45,7 @@ namespace WebsitePerformanceEvaluator.WorkWithNet
                 }
                 
             }
+
             urlResponses = urlResponses.OrderBy(x => x.ResponceTime).ToList();
             return urlResponses;
         }
