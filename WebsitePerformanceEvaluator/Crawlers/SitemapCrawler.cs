@@ -7,6 +7,7 @@ using WebsitePerformanceEvaluator.Abstractions;
 using System.Net;
 using System.Xml;
 using System.Xml.Linq;
+using System.Web;
 
 namespace WebsitePerformanceEvaluator.Crawlers
 {
@@ -15,33 +16,40 @@ namespace WebsitePerformanceEvaluator.Crawlers
         public List<string> CrawlBySitemap(string url)
         {
             List<string> urls = new List<string>();
+            Queue<string> queue = new Queue<string>();
+
+            var urlXmlPage = url + "sitemap.xml";
+            queue.Enqueue(urlXmlPage);
             try
             {
-                var urlXmlPage = url + "/sitemap.xml";
+                while(queue.Count > 0)
+                {
+                    var currentUrl = queue.Dequeue();
 
-                
-                //Create webclient to get data
-                using WebClient wc = new WebClient();                    
-                wc.Encoding = Encoding.UTF8;
-                    
-                //Download sitemap as a string
-                string sitemapString = wc.DownloadString(urlXmlPage);
+                    //Create webclient to get data
+                    using WebClient wc = new WebClient();
+                    wc.Encoding = Encoding.UTF8;
 
-                //Create xml document and serialize sitemap string to xml
-                XmlDocument urldoc = new XmlDocument();
-                urldoc.LoadXml(sitemapString);
-                if (urldoc == null)
-                    throw new Exception("One of links is invalid");
+                    //Download sitemap as a string
+                    string sitemapString = wc.DownloadString(currentUrl);
 
-                Console.WriteLine(urldoc.ToString());
-
-                //Get all loc elements that contains all website links
-                XmlNodeList elements = urldoc.GetElementsByTagName("loc");
-
-                foreach (XmlNode el in elements)
-                    urls.Add(el.InnerText);
-                
-                
+                    //Using XmlReader to read each element innertext. 
+                    //It is going to help avoid exceptions with specifical symbols when load it to XmlDocument
+                    using (XmlReader reader = XmlReader.Create(new StringReader(sitemapString)))
+                    {
+                        while (reader.Read())
+                        {
+                            if (reader.Name == "loc")
+                            {
+                                var element = reader.ReadElementContentAsString();
+                                if (element.Contains("sitemap"))
+                                    queue.Enqueue(element);
+                                else
+                                    urls.Add(element);
+                            }
+                        }
+                    }                        
+                }    
             }
             catch(WebException e)
             {
