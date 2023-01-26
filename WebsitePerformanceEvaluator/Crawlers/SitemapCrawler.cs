@@ -49,7 +49,10 @@ namespace WebsitePerformanceEvaluator.Crawlers
                             }
                         }
                     }                        
-                }    
+                }
+
+                //Remove all identical strings from the list
+                urls = urls.Select(x => x.TrimEnd('/')).Distinct().Select(x => x + '/').ToList();
             }
             catch(WebException e)
             {
