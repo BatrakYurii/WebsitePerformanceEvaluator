@@ -45,7 +45,16 @@ namespace WebsitePerformanceEvaluator.Crawlers
                                 if (element.Contains("sitemap"))
                                     queue.Enqueue(element);
                                 else
+                                {
+                                    //If link is relative concate it with base url
+                                    if (!element.Contains(url))
+                                    {
+                                        var baseUri = new Uri(url);
+                                        element = new Uri(baseUri, element).ToString();
+                                    }
                                     urls.Add(element);
+                                }
+                                    
                             }
                         }
                     }                        
