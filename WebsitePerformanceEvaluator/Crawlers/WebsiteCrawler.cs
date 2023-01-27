@@ -76,7 +76,7 @@ namespace WebsitePerformanceEvaluator.Crawlers
             }
             finalUrlsList.AddRange(checkedUrl);
 
-             return finalUrlsList;
+            return finalUrlsList;
         }
     }
 }
