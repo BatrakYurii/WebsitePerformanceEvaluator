@@ -51,6 +51,12 @@ namespace WebsitePerformanceEvaluator.Crawlers
                     //We can have some partial links like: /souces/barbeque/. We need to concate this string with base url
                     fullLinks.AddRange(linksForCurrent.Where(x => x.StartsWith("/")).Select(x => $"{firstUrlPart}{x}"));
 
+                    //Remove part after anchor if exist
+                    fullLinks = fullLinks.Select(x => {
+                        var index = x.IndexOf("#");
+                        return index != -1 ? x.Substring(0, index) : x;
+                    }).ToList();
+
                     foreach (var link in fullLinks)
                     {
                         //Add link if it is unique and not null and contain base url
