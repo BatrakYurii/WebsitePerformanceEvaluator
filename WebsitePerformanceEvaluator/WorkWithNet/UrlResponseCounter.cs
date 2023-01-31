@@ -46,6 +46,7 @@ namespace WebsitePerformanceEvaluator.WorkWithNet
                 
             }
 
+            // Order by lowest time responce to highest
             urlResponses = urlResponses.OrderBy(x => x.ResponceTime).ToList();
             return urlResponses;
         }
